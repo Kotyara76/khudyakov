@@ -12,11 +12,11 @@
 /** @var CBitrixComponent $component */
 ?>
 <?$APPLICATION->IncludeComponent(
-	"bitrix:highloadblock.list",
+	"khudyakov:highloadblock.list",
 	"",
 	array(
 		"BLOCK_ID" => $arParams['CLIENT_BLOCK_ID'],
-		"DETAIL_URL" => "?CLIENT_ID=#ID#",
+		"DETAIL_URL" => $arResult['URL_TEMPLATES']['detail'],
 		"COMPONENT_TEMPLATE" => ".default",
 		'ROWS_PER_PAGE' => 10,
 		'NAV_TEMPLATE' => 'modern',
