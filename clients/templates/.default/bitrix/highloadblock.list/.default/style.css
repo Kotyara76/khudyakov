@@ -1,0 +1,17 @@
+.clients-table {
+    width: 100%;
+
+}
+
+.clients-table thead th {
+    background-color: #0000AA;
+    color: white;
+}
+
+.clients-table tbody tr:hover {
+    background-color: lightgray;
+}
+
+.clients-table tbody td {
+    padding: 4px 6px;
+}
