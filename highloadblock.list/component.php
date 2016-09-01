@@ -1,6 +1,6 @@
-<?php
+<?php if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
 
-if (!defined("B_PROLOG_INCLUDED") || B_PROLOG_INCLUDED!==true)die();
+CPageOption::SetOptionString("main", "nav_page_in_session", "N"); // Запрещаем сохранять страницу в сессии
 
 $requiredModules = array('highloadblock');
 
@@ -12,6 +12,8 @@ foreach ($requiredModules as $requiredModule)
 		return 0;
 	}
 }
+
+$arParams['DISPLAY_FIELDS'] = array_diff($arParams['DISPLAY_FIELDS'], array(''));
 
 use Bitrix\Highloadblock as HL;
 use Bitrix\Main\Entity;
@@ -54,7 +56,7 @@ if (!empty($_GET['sort_type']) && in_array($_GET['sort_type'], array('ASC', 'DES
 
 // limit
 $limit = array(
-	'nPageSize' => $arParams['ROWS_PER_PAGE'],
+	'nPageSize' => ($arParams['ROWS_PER_PAGE'] > 0) ? (int)$arParams['ROWS_PER_PAGE'] : 10,
 	'iNumPage' => is_set($_GET['PAGEN_1']) ? $_GET['PAGEN_1'] : 1,
 	'bShowAll' => true
 );
@@ -66,20 +68,14 @@ $limit = array(
 $main_query = new Entity\Query($entity);
 $main_query->setSelect(array('*'));
 $main_query->setOrder(array($sort_id => $sort_type));
-//$main_query->setSelect($select)
-//	->setFilter($filter)
-//	->setGroup($group)
-//	->setOrder($order)
-//	->setOptions($options);
-
 
 if (isset($limit['nPageTop']))
 {
-	$main_query->setLimit($limit['nPageTop']);
+	//$main_query->setLimit($limit['nPageTop']); // Размер страницы задаётся в NavStart
 }
 else
 {
-	$main_query->setLimit($limit['nPageSize']);
+	//$main_query->setLimit($limit['nPageSize']);  // Размер страницы задаётся в NavStart
 	$main_query->setOffset(($limit['iNumPage']-1) * $limit['nPageSize']);
 }
 
@@ -89,6 +85,7 @@ else
 $result = $main_query->exec();
 $result = new CDBResult($result);
 
+$result->NavStart($limit['nPageSize']); // Магия
 // build results
 $rows = array();
 
@@ -136,7 +133,7 @@ while ($row = $result->Fetch())
 	$rows[] = $row;
 }
 
-$result->NavStart();
+
 $arResult["NAV_STRING"] = $result->GetPageNavString('', (is_set($arParams['NAV_TEMPLATE'])) ? $arParams['NAV_TEMPLATE'] : 'arrows');
 $arResult["NAV_PARAMS"] = $result->GetNavParams();
 $arResult["NAV_NUM"] = $result->NavNum;
@@ -148,6 +145,6 @@ $arResult['tableColumns'] = $tableColumns;
 
 $arResult['sort_id'] = $sort_id;
 $arResult['sort_type'] = $sort_type;
-var_dump($result);
+//var_dump($result);
 
 $this->IncludeComponentTemplate();
