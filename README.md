@@ -13,3 +13,43 @@
 4. Должна быть возможность сортировки элементов списка по каждой колонке в алфавитном порядке.
 
 Решение подготовить для редакции 1С-Битрикс: Стандарт, файлы решения разместить в репозитории git (исключив ядро).
+
+# Установка
+
+Разместить компоненты в директории /local/components/khudyakov или /bitrix/components/khudyakov
+
+Данные хранятся в HL-блоках.
+
+Для тестирования необходимо создать два блока с произвольными параметрами:
+
+1. Блок с данными клиентов. Названия и коды полей не имеют значения. Одно из полей должно быть с типом "Привязка к HL-блоку", оно будет использоваться для показа компании клиента. В качестве связанного блока необходимо выбрать блок м данными компаний.
+2. Блок с данными компаний. Названия и коды полей не существенны. 
+
+Разместить на странице компонент со следующем кодом:
+
+<?$APPLICATION->IncludeComponent(
+	"khudyakov:clients", 
+	".default", 
+	array(
+		"COMPONENT_TEMPLATE" => ".default",
+		"AJAX_MODE" => "N",
+		"AJAX_OPTION_JUMP" => "N",
+		"AJAX_OPTION_STYLE" => "Y",
+		"AJAX_OPTION_HISTORY" => "N",
+		"AJAX_OPTION_ADDITIONAL" => "undefined",
+		"COMPANY_BLOCK_ID" => "2",
+		"CLIENT_BLOCK_ID" => "1",
+		"LIST_DISPLAY_FIELDS" => array(
+			0 => "UF_FIO",
+			1 => "UF_POSITION",
+			2 => "UF_MOBILE_PHONE",
+			3 => "UF_COMPANY",
+		),
+		"LIST_DETAIL_LINK_FIELD" => "UF_FIO",
+		"VARIABLE_ALIASES" => array(
+			"CLIENT_ID" => "CLIENT_ID",
+			"COMPANY_ID" => "COMPANY_ID",
+		)
+	),
+	false
+);?>
