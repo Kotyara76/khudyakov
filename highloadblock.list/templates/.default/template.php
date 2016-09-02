@@ -55,15 +55,12 @@
 		// todo перенести формирование detail_url в result_modifier
 		if ($col === $arParams['DETAIL_LINK_FIELD'] && !empty($arParams['DETAIL_URL']))
 		{
-			$url = str_replace(
-				'#ID#',
-				$row['ID'],
-				$arParams['DETAIL_URL']
-			);
+			$url = str_replace('#ID#', $row['ID'], $arParams['DETAIL_URL']);
 
 			$finalValue = '<a href="'.htmlspecialcharsbx($url).'">'.$finalValue.'</a>';
-		} elseif ('hlblock' === $arResult['fields'][$col]['USER_TYPE_ID']) {
-			$finalValue = '<a href="#" class="edit-button">'.$finalValue.'</a>';
+		} elseif ('hlblock' === $arResult['fields'][$col]['USER_TYPE_ID'] && isset($arResult['companies'][$row['ID']]) && $arResult['companies'][$row['ID']] > 0) {
+			$url = str_replace('#ID#', $arResult['companies'][$row['ID']], $arParams['EDIT_URL']);
+			$finalValue = '<a href="'.$url.'" class="edit-button">'.$finalValue.'</a>';
 		}
 
 		?>

@@ -17,6 +17,7 @@
 	array(
 		"BLOCK_ID" => $arParams['CLIENT_BLOCK_ID'],
 		"DETAIL_URL" => $arResult['URL_TEMPLATES']['detail'],
+		"EDIT_URL" => $arResult['URL_TEMPLATES']['edit'],
 		"COMPONENT_TEMPLATE" => ".default",
 		'ROWS_PER_PAGE' => 10,
 		'NAV_TEMPLATE' => 'modern',

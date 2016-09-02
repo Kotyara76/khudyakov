@@ -66,8 +66,8 @@ BX.ready(function() {
         ]
     });
     $('a.edit-button').click(function() {
-        console.log(this);
-        BX.ajax.insertToNode('?COMPANY_ID=1&ajax=y', BX('ajax-edit-company')); // функция ajax-загрузки контента из урла в #div
+        url = $(this).attr('href') + '&ajax=y';
+        BX.ajax.insertToNode(url, BX('ajax-edit-company')); // функция ajax-загрузки контента из урла в #div
         editCompany.show(); // появление окна
         return false;
     });

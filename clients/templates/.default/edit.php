@@ -10,7 +10,6 @@
 /** @var string $templateFolder */
 /** @var string $componentPath */
 /** @var CBitrixComponent $component */
-var_dump($arResult);
 ?>
 <?$APPLICATION->IncludeComponent(
     "khudyakov:highloadblock.edit",

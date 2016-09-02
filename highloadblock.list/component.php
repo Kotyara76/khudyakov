@@ -88,6 +88,7 @@ $result = new CDBResult($result);
 $result->NavStart($limit['nPageSize']); // Магия
 // build results
 $rows = array();
+$companies = array();
 
 $tableColumns = array();
 
@@ -103,7 +104,11 @@ while ($row = $result->Fetch())
 
 		$arUserField = $fields[$k];
 
-		if ($arUserField["SHOW_IN_LIST"]!="Y")
+		if ('hlblock' === $arUserField['USER_TYPE_ID']) { // привязка к компании
+			$companies[$row['ID']] = $v;
+		}
+
+		if ($arUserField["SHOW_IN_LIST"] != "Y")
 		{
 			continue;
 		}
@@ -129,7 +134,6 @@ while ($row = $result->Fetch())
 		$row[$k] = $html;
 	}
 
-
 	$rows[] = $row;
 }
 
@@ -141,10 +145,10 @@ $arResult["NAV_NUM"] = $result->NavNum;
 
 $arResult['rows'] = $rows;
 $arResult['fields'] = $fields;
+$arResult['companies'] = $companies;
 $arResult['tableColumns'] = $tableColumns;
 
 $arResult['sort_id'] = $sort_id;
 $arResult['sort_type'] = $sort_type;
-//var_dump($result);
 
 $this->IncludeComponentTemplate();
